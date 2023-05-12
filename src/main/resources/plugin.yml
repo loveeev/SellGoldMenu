@@ -1,0 +1,9 @@
+name: GoldExchange
+version: '${version}'
+main: dev.loveeeev.goldexchange.Main
+authors: [ kiril@zxcvop ]
+api-version: "1.13"
+depend:
+  - Vault
+commands:
+  bank:

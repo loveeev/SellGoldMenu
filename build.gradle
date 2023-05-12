@@ -1,0 +1,69 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+}
+
+group = 'dev.temez'
+version = '0.1dev'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'codmc-repo'
+        url = 'https://repo.codemc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
+    maven {
+        name = 'buktify-repo'
+        url = 'https://repo.crazylegend.space/public'
+    }
+}
+
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.samjakob:SpiGUI:1.3'
+    implementation 'org.buktify:configurate:1.0.5'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+}
+
+shadowJar {
+    relocate 'org.apache.commons', 'dev.temez.goldexchange.util.commons'
+    relocate 'com.samjakob.spigui', 'dev.temez.goldexchange.util.gui'
+    minimize()
+}
+
+tasks.with {
+    withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << '-Xlint:none'
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+test {
+    useJUnitPlatform();
+}
